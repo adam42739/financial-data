@@ -21,7 +21,7 @@ def ticker_format(ticker):
     return ticker.lower().replace("-", ".")
 
 
-CBOE_FILE_ENDING = "_quotedata"
+CBOE_FILE_ENDING = "_quotedata.csv"
 
 
 class Driver:
