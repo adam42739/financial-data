@@ -74,14 +74,15 @@ def parse_df(df):
     return df
 
 
-def update_db_from_downloads(ticker, downloads_dir, db_dir, date):
-    ticker = cboeoptionscraper.ticker_format(ticker)
-    downloads_path = (
-        downloads_dir + ticker + cboeoptionscraper.CBOE_FILE_ENDING + ".csv"
-    )
-    df = pandas.read_csv(downloads_path, header=2)
-    os.remove(downloads_path)
-    df = parse_df(df)
-    date_str = str(date.year) + str(date.month).zfill(2) + str(date.day).zfill(2)
-    db_path = db_dir + ticker + date_str + ".csv"
-    df.to_csv(db_path, index=False)
+def update_db_from_downloads(tickers, downloads_dir, db_dir, date):
+    for ticker in tickers:
+        ticker = cboeoptionscraper.ticker_format(ticker)
+        downloads_path = (
+            downloads_dir + ticker + cboeoptionscraper.CBOE_FILE_ENDING + ".csv"
+        )
+        df = pandas.read_csv(downloads_path, header=2)
+        os.remove(downloads_path)
+        df = parse_df(df)
+        date_str = str(date.year) + str(date.month).zfill(2) + str(date.day).zfill(2)
+        db_path = db_dir + ticker + date_str + ".csv"
+        df.to_csv(db_path, index=False)

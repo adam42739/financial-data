@@ -37,11 +37,12 @@ def parse_df(df):
     return df
 
 
-def update_db_from_downloads(ticker, downloads_dir, db_dir):
-    ticker = yahoopricescraper.ticker_format(ticker)
-    downloads_path = downloads_dir + ticker + ".csv"
-    df = pandas.read_csv(downloads_path)
-    os.remove(downloads_path)
-    df = parse_df(df)
-    db_path = db_dir + ticker + ".csv"
-    df.to_csv(db_path, index=False)
+def update_db_from_downloads(tickers, downloads_dir, db_dir):
+    for ticker in tickers:
+        ticker = yahoopricescraper.ticker_format(ticker)
+        downloads_path = downloads_dir + ticker + ".csv"
+        df = pandas.read_csv(downloads_path)
+        os.remove(downloads_path)
+        df = parse_df(df)
+        db_path = db_dir + ticker + ".csv"
+        df.to_csv(db_path, index=False)
