@@ -130,6 +130,6 @@ dist
 .pnp.*
 /main.py
 /data
-/financedatabase/__pycache__
+/financedbms/__pycache__
 /cboeoptionscraper/__pycache__
 /yahoopricescraper/__pycache__

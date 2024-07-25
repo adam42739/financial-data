@@ -1,6 +1,7 @@
 import pandas
 import datetime
 import os
+import cboeoptionscraper
 
 CBOE_START_DATE = datetime.datetime(1970, 1, 1)
 
@@ -20,15 +21,8 @@ DEFAULT_DF = pandas.DataFrame(
 )
 
 
-def ticker_format(ticker):
-    return ticker.lower().replace("-", ".")
-
-
-CBOE_FILE_ENDING = "_quotedata.csv"
-
-
 def get_options(ticker, date, db_dir):
-    ticker = ticker_format(ticker)
+    ticker = cboeoptionscraper.ticker_format(ticker)
     date_str = str(date.year) + str(date.month).zfill(2) + str(date.day).zfill(2)
     path = db_dir + ticker + date_str + ".csv"
     if os.path.isfile(path):
@@ -79,8 +73,8 @@ def parse_df(df):
 
 def update_db_from_downloads(tickers, downloads_dir, db_dir, date):
     for ticker in tickers:
-        ticker = ticker_format(ticker)
-        downloads_path = downloads_dir + ticker + CBOE_FILE_ENDING
+        ticker = cboeoptionscraper.ticker_format(ticker)
+        downloads_path = downloads_dir + ticker + cboeoptionscraper.CBOE_FILE_ENDING
         df = pandas.read_csv(downloads_path, header=2)
         os.remove(downloads_path)
         df = parse_df(df)
