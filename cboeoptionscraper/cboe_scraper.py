@@ -4,16 +4,32 @@ from selenium.webdriver.common.keys import Keys
 import time
 from cboeoptionscraper import elements
 import os
+import data_logs
+import datetime
 
 
-def download_tickers(tickers, downloads_dir, wait_time=1):
+def download_tickers(tickers, downloads_dir, dbname, wait_time=1):
     driver = Driver()
+    data = data_logs.read_log(dbname, data_logs.CBOE_OPTION_LOG)
     failed = []
     for ticker in tickers:
+        ticker = ticker_format(ticker)
+        if ticker in data.keys():
+            found = False
+            for date in data[ticker]:
+                if datetime.datetime.today().date() == date.date():
+                    found = True
+                    break
+            if found:
+                continue
         try:
             driver.download_ticker(ticker, downloads_dir, wait_time)
+            if ticker not in data.keys():
+                data[ticker] = []
+            data[ticker].append(datetime.datetime.today())
         except:
             failed.append(ticker)
+    data_logs.write_log(dbname, data, data_logs.CBOE_OPTION_LOG)
     return failed
 
 

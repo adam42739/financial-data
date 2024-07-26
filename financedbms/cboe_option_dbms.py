@@ -3,6 +3,8 @@ import datetime
 import os
 import cboeoptionscraper
 
+DB_DIR = "cboe_options"
+
 CBOE_START_DATE = datetime.datetime(1970, 1, 1)
 
 DEFAULT_DF = pandas.DataFrame(
@@ -21,10 +23,10 @@ DEFAULT_DF = pandas.DataFrame(
 )
 
 
-def get_options(ticker, date, db_dir):
+def get_options(ticker, date, dbname):
     ticker = cboeoptionscraper.ticker_format(ticker)
     date_str = str(date.year) + str(date.month).zfill(2) + str(date.day).zfill(2)
-    path = db_dir + ticker + date_str + ".csv"
+    path = dbname + "/" + DB_DIR + "/" + ticker + date_str + ".csv"
     if os.path.isfile(path):
         df = pandas.read_csv(path)
         df["Expiration"] = CBOE_START_DATE + pandas.to_timedelta(
@@ -71,7 +73,7 @@ def parse_df(df):
     return df
 
 
-def update_db_from_downloads(tickers, downloads_dir, db_dir, date):
+def update_db_from_downloads(tickers, downloads_dir, dbname, date):
     for ticker in tickers:
         ticker = cboeoptionscraper.ticker_format(ticker)
         downloads_path = downloads_dir + ticker + cboeoptionscraper.CBOE_FILE_ENDING
@@ -79,5 +81,5 @@ def update_db_from_downloads(tickers, downloads_dir, db_dir, date):
         os.remove(downloads_path)
         df = parse_df(df)
         date_str = str(date.year) + str(date.month).zfill(2) + str(date.day).zfill(2)
-        db_path = db_dir + ticker + date_str + ".csv"
+        db_path = dbname + "/" + DB_DIR + "/" + ticker + date_str + ".csv"
         df.to_csv(db_path, index=False)
