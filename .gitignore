@@ -134,3 +134,5 @@ dist
 /cboeoptionscraper/__pycache__
 /yahoopricescraper/__pycache__
 /__pycache__
+/cboe/__pycache__
+/yahoo/__pycache__
