@@ -1,5 +1,16 @@
 import numpy
 import random
+import math
+
+
+def closeness(metalog1, metalog2):
+    STEP = 0.0005
+    value = 0
+    x = STEP
+    while x < 1:
+        value += STEP * math.pow(metalog1.quantile(x) - metalog2.quantile(x), 2)
+        x += STEP
+    return math.sqrt(value)
 
 
 class Metalog:

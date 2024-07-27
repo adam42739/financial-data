@@ -7,9 +7,10 @@ class MetalogPrices:
     def __init__(self, db_name, ticker):
         self.ticker = ticker
         self.prices = yahoo.get_prices(ticker, db_name)
-        self.metalogs = {}
+        self.start_date = self.prices["Date"].min()
+        self.end_date = self.prices["Date"].max()
 
-    def copmute_metalog(self, start_date, end_date, change_size, dim, metalog_key):
+    def compute_metalog(self, start_date, end_date, change_size, dim):
         bmap = (self.prices["Date"] < end_date) & (self.prices["Date"] >= start_date)
         pframe = (
             self.prices[bmap]
@@ -24,5 +25,10 @@ class MetalogPrices:
                 x.append(math.log(close_f / close_i))
             else:
                 break
-        self.metalogs[metalog_key] = metalog.Metalog(dim)
-        self.metalogs[metalog_key].fit(x)
+        if start_date not in self.metalogs:
+            self.metalogs[start_date] = {}
+        if end_date not in self.metalogs[start_date]:
+            self.metalogs[start_date][end_date] = {}
+        mlog = metalog.Metalog(dim)
+        mlog.fit(x)
+        return mlog
