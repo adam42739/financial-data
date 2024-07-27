@@ -28,9 +28,9 @@ def ticker_format(ticker):
     return ticker.upper().replace(".", "-")
 
 
-def get_prices(ticker, dbname):
+def get_prices(ticker, db_name):
     ticker = ticker_format(ticker)
-    path = dbname + "/" + DB_DIR + "/" + ticker + ".csv"
+    path = db_name + "/" + DB_DIR + "/" + ticker + ".csv"
     if os.path.isfile(path):
         df = pandas.read_csv(path)
         df["Date"] = YAHOO_START_DATE + pandas.to_timedelta(df["Date"], unit="d")
