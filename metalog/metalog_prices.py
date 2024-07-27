@@ -1,4 +1,4 @@
-import metaloganalysis
+import metalog
 import yahoo
 import math
 import datetime
@@ -30,6 +30,6 @@ class MetalogPrices:
                 x.append(math.log(close_f / close_i))
             else:
                 break
-        mlog = metaloganalysis.Metalog(dim)
+        mlog = metalog.Metalog(dim)
         mlog.fit(x)
         return mlog, next_day

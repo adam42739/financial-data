@@ -1,16 +1,16 @@
-import metaloganalysis
+import metalog
 import os
 import pandas
 import datetime
 
-import metaloganalysis.metalog
+import metalog.metalog
 
 DB_NAME = "data"
 
 
 def run_ticker(start_date, ticker, days_back, days_change, dim, db_name):
     results = pandas.DataFrame({"Date": [], ticker: []})
-    mprices = metaloganalysis.MetalogPrices(db_name, ticker)
+    mprices = metalog.MetalogPrices(db_name, ticker)
     date = max(start_date, mprices.start_date) + datetime.timedelta(
         days_back + days_change
     )
